@@ -11,7 +11,7 @@ As a data engineer, you are asked to create a mechanism to analyze past years da
 Your code should be modular and reusable for future. If the newspaper gets data for the year 2019 (with the assumption that the necessary data to calculate the metrics are available) and puts it in the `input` directory, running the `run.sh` script should produce the results in the `output` folder without needing to change the code.
 ```
 
-# Problems arised:
+# Problems that arose:
 
 
 ```
