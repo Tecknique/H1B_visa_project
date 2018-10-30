@@ -6,6 +6,10 @@ from collections import Counter
 FILENAME = sys.argv[1]
 
 def csv_to_dict(FILENAME):
+    ''' reads in csv file specifying the delimiter as ";"
+    add each line of the csv into a list of dictionaries
+    return the dictionary list after iterating through all entries
+    '''    
     reader = csv.DictReader(open(FILENAME,'rb'),delimiter = ';')
     dict_list = []
     for line in reader:
@@ -15,6 +19,9 @@ def csv_to_dict(FILENAME):
 
 
 def top_10(dic, col_name):
+    ''' count and determine the top 10 instances of occupation and state
+    using the 'SOC_NAME' and the 'WORKSITE_STATE'
+    '''
     top_10_list = []
     c = Counter()
     for d in dic:
@@ -25,6 +32,17 @@ def top_10(dic, col_name):
 
 
 def separate_dics(dic, col_name, fields, sorted_by):  
+    '''Count instances of the top ten values provided as the result of top_ten
+    that are also certified, and use that number as a value for the column name
+    "NUMBER_CERTIFIED_APPLICACTIONS".
+    Find the value of "NUMBER_CERTIFIED_APPLICATIONS" reguardless of occupation
+    or state and find a percentage using this value as a denominator and
+    "NUMBER_CERTIFIED_APPLICATIONS" as a numerator.
+    Change the format to show a percentage instead of a decimal fraction.
+    Zip the output values to their specific fieldnames.
+    Order the dictionary by "NUMBER_CERTIFIED_APPLICATIONS". In case of tie,
+    order the tied ones alphabetically by "TOP_OCCUPATIONS" or "TOP_STATES"
+    '''
     top_ten_vals = top_10(dic, col_name)
     lst = []
     for item in top_ten_vals:
@@ -36,6 +54,9 @@ def separate_dics(dic, col_name, fields, sorted_by):
     return sorted(lst, key=lambda d: (-d['NUMBER_CERTIFIED_APPLICATIONS'], d[sorted_by]))
     
 def dictionary_to_text(lst_dic, fieldnames, filename):
+    '''
+    Write out each dictionary as a text file
+    '''
     with open(filename, 'w') as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames, delimiter=';')
         writer.writeheader()
@@ -44,6 +65,9 @@ def dictionary_to_text(lst_dic, fieldnames, filename):
 
 
 if __name__ == '__main__':
+    '''
+    Create variables here
+    '''
     dict_list = csv_to_dict(FILENAME)
     print dict_list
     TOP_10_OCCUPATION_COL_NAMES = ['TOP_OCCUPATIONS', 'NUMBER_CERTIFIED_APPLICATIONS','PERCENTAGE']
